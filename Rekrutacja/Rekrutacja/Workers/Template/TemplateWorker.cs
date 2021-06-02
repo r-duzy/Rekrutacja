@@ -58,15 +58,15 @@ namespace Rekrutacja.Workers.Template
             //Włączenie Debug, aby działał należy wygenerować DLL w trybie DEBUG
             DebuggerSession.MarkLineAsBreakPoint();
             
-            //Pobieranie danych z Contextu
+            //Pobieranie danych z Contextu - jeśli nie ma wybranych pracowników to kończymy działanie metody
             Pracownik[] pracownicy = null;
             if (this.Cx.Contains(typeof(Pracownik[])))
-            {
                 pracownicy = (Pracownik[])this.Cx[typeof(Pracownik[])];
-            }
+            else
+                return;
 
             //Modyfikacja danych
-            //Aby modyfikować dane musimy mieć otwartą sesję, któa nie jest read only
+            //Aby modyfikować dane musimy mieć otwartą sesję, która nie jest read only
             using (Session nowaSesja = this.Cx.Login.CreateSession(false, false, "ModyfikacjaPracownika"))
             {
                 //Otwieramy Transaction aby można było edytować obiekt z sesji
@@ -91,7 +91,7 @@ namespace Rekrutacja.Workers.Template
         }
         
         /// <summary>
-        /// Metoda obliczająca wynik działania
+        /// Metoda obliczająca wynik działania matematycznego
         /// </summary>
         /// <param name="czynnikA">Pierwszy składnik działania</param>
         /// <param name="czynnikB">Drugi składnik działania</param>
